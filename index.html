@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSphere Dashboard</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5',
+                        secondary: '#10B981',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .vanta-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .progress-ring__circle {
+            transition: stroke-dashoffset 0.35s;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div id="vanta-bg" class="vanta-bg"></div>
+    
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i data-feather="book" class="text-primary h-6 w-6"></i>
+                        <span class="ml-2 text-xl font-bold text-gray-900">EduSphere</span>
+                    </div>
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="index.html" class="border-primary text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            Dashboard
+                        </a>
+                        <a href="activities.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            Activities
+                        </a>
+                        <a href="portfolio.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            Portfolio
+                        </a>
+                        <a href="#" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            Reports
+                        </a>
+                    </div>
+                </div>
+                <div class="hidden sm:ml-6 sm:flex sm:items-center">
+                    <button class="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none">
+                        <i data-feather="bell"></i>
+                    </button>
+                    <div class="ml-3 relative">
+                        <div>
+                            <button type="button" class="bg-white rounded-full flex text-sm focus:outline-none" id="user-menu">
+                                <span class="sr-only">Open user menu</span>
+                                <img class="h-8 w-8 rounded-full" src="https://cdn-icons-png.flaticon.com/512/11919/11919842.png" alt="">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="-mr-2 flex items-center sm:hidden">
+                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none">
+                        <i data-feather="menu"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-900">Welcome back, Priya!</h1>
+            <p class="text-gray-600">Here's your academic overview</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+            <!-- Stats Cards -->
+            <div class="glass-card p-6 shadow-sm">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-primary bg-opacity-10">
+                        <i data-feather="book-open" class="text-primary"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-500">CGPA</p>
+                        <h3 class="text-2xl font-semibold text-gray-900">8.7</h3>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="flex justify-between text-sm text-gray-500">
+                        <span>Last semester: 8.5</span>
+                        <span class="text-green-600">+0.2</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card p-6 shadow-sm">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-secondary bg-opacity-10">
+                        <i data-feather="check-circle" class="text-secondary"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-500">Attendance</p>
+                        <h3 class="text-2xl font-semibold text-gray-900">92%</h3>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                        <div class="bg-secondary h-2.5 rounded-full" style="width: 92%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card p-6 shadow-sm">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-yellow-500 bg-opacity-10">
+                        <i data-feather="award" class="text-yellow-500"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-500">Credits Earned</p>
+                        <h3 class="text-2xl font-semibold text-gray-900">145</h3>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <p class="text-sm text-gray-500">45 more to graduation</p>
+                </div>
+            </div>
+
+            <div class="glass-card p-6 shadow-sm">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-purple-500 bg-opacity-10">
+                        <i data-feather="clock" class="text-purple-500"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-500">Pending Approvals</p>
+                        <h3 class="text-2xl font-semibold text-gray-900">3</h3>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <a href="#" class="text-sm font-medium text-purple-600 hover:text-purple-500">View requests</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Performance Chart -->
+            <div class="lg:col-span-2 glass-card p-6 shadow-sm">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-medium text-gray-900">Academic Performance</h2>
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-1 text-xs rounded-full bg-primary text-white">Semester</button>
+                        <button class="px-3 py-1 text-xs rounded-full bg-gray-200 text-gray-700">Yearly</button>
+                    </div>
+                </div>
+                <div class="h-64">
+                    <canvas id="performanceChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Recent Activities -->
+            <div class="glass-card p-6 shadow-sm">
+                <h2 class="text-lg font-medium text-gray-900 mb-4">Recent Activities</h2>
+                <div class="space-y-4">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <div class="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center">
+                                <i data-feather="check" class="text-green-500"></i>
+                            </div>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-gray-900">Internship Approved</p>
+                            <p class="text-sm text-gray-500">Google Summer Internship • 2 days ago</p>
+                        </div>
+                    </div>
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                                <i data-feather="upload" class="text-blue-500"></i>
+                            </div>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-gray-900">Certificate Uploaded</p>
+                            <p class="text-sm text-gray-500">AWS Certification • 5 days ago</p>
+                        </div>
+                    </div>
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <div class="h-10 w-10 rounded-full bg-yellow-100 flex items-center justify-center">
+                                <i data-feather="alert-triangle" class="text-yellow-500"></i>
+                            </div>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-gray-900">Low Attendance Alert</p>
+                            <p class="text-sm text-gray-500">Computer Networks • 1 week ago</p>
+                        </div>
+                    </div>
+                    <div class="text-center mt-4">
+                        <a href="#" class="text-sm font-medium text-primary hover:text-primary-dark">View all activities</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Ring -->
+            <div class="glass-card p-6 shadow-sm flex flex-col items-center justify-center">
+                <h2 class="text-lg font-medium text-gray-900 mb-6">Credit Completion</h2>
+                <div class="relative">
+                    <svg class="w-32 h-32">
+                        <circle
+                            class="text-gray-200"
+                            stroke-width="8"
+                            stroke="currentColor"
+                            fill="transparent"
+                            r="52"
+                            cx="64"
+                            cy="64"
+                        />
+                        <circle
+                            class="text-primary"
+                            stroke-width="8"
+                            stroke-dasharray="326.56"
+                            stroke-dashoffset="98"
+                            stroke-linecap="round"
+                            stroke="currentColor"
+                            fill="transparent"
+                            r="52"
+                            cx="64"
+                            cy="64"
+                        />
+                    </svg>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <span class="text-2xl font-bold text-gray-900">70%</span>
+                    </div>
+                </div>
+                <p class="mt-4 text-gray-600 text-center">You've completed 145 out of 190 required credits</p>
+                <button class="mt-4 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark">View Details</button>
+            </div>
+
+            <!-- Upcoming Deadlines -->
+            <div class="glass-card p-6 shadow-sm">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-medium text-gray-900">Upcoming Deadlines</h2>
+                    <a href="#" class="text-sm text-primary hover:underline">View all</a>
+                </div>
+                <div class="space-y-4">
+                    <div class="border-l-4 border-red-500 pl-4 py-2">
+                        <p class="text-sm font-medium text-gray-900">Advanced Algorithms Project</p>
+                        <p class="text-sm text-gray-500">Due in 2 days</p>
+                    </div>
+                    <div class="border-l-4 border-yellow-500 pl-4 py-2">
+                        <p class="text-sm font-medium text-gray-900">Research Paper Submission</p>
+                        <p class="text-sm text-gray-500">Due in 1 week</p>
+                    </div>
+                    <div class="border-l-4 border-green-500 pl-4 py-2">
+                        <p class="text-sm font-medium text-gray-900">Internship Application</p>
+                        <p class="text-sm text-gray-500">Due in 3 weeks</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="glass-card p-6 shadow-sm">
+                <h2 class="text-lg font-medium text-gray-900 mb-4">Quick Actions</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <a href="#" class="flex flex-col items-center justify-center p-4 rounded-lg bg-gray-50 hover:bg-gray-100">
+                        <div class="p-3 rounded-full bg-primary bg-opacity-10 mb-2">
+                            <i data-feather="upload" class="text-primary"></i>
+                        </div>
+                        <span class="text-sm font-medium text-gray-900">Upload Certificate</span>
+                    </a>
+                    <a href="#" class="flex flex-col items-center justify-center p-4 rounded-lg bg-gray-50 hover:bg-gray-100">
+                        <div class="p-3 rounded-full bg-secondary bg-opacity-10 mb-2">
+                            <i data-feather="download" class="text-secondary"></i>
+                        </div>
+                        <span class="text-sm font-medium text-gray-900">Download Portfolio</span>
+                    </a>
+                    <a href="#" class="flex flex-col items-center justify-center p-4 rounded-lg bg-gray-50 hover:bg-gray-100">
+                        <div class="p-3 rounded-full bg-yellow-500 bg-opacity-10 mb-2">
+                            <i data-feather="calendar" class="text-yellow-500"></i>
+                        </div>
+                        <span class="text-sm font-medium text-gray-900">Event Calendar</span>
+                    </a>
+                    <a href="#" class="flex flex-col items-center justify-center p-4 rounded-lg bg-gray-50 hover:bg-gray-100">
+                        <div class="p-3 rounded-full bg-purple-500 bg-opacity-10 mb-2">
+                            <i data-feather="file-text" class="text-purple-500"></i>
+                        </div>
+                        <span class="text-sm font-medium text-gray-900">Request Letter</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Vanta.js background
+        VANTA.GLOBE({
+            el: "#vanta-bg",
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            color: '#4F46E5',
+            backgroundColor: '#ffffff',
+            size: 0.8
+        });
+
+        // Performance Chart
+        const ctx = document.getElementById('performanceChart').getContext('2d');
+        const performanceChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4', 'Sem 5', 'Sem 6'],
+                datasets: [{
+                    label: 'SGPA',
+                    data: [7.8, 8.2, 8.5, 8.7, 8.9, 9.0],
+                    borderColor: '#4F46E5',
+                    backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                    tension: 0.3,
+                    fill: true,
+                    borderWidth: 2
+                }, {
+                    label: 'Class Average',
+                    data: [7.2, 7.5, 7.8, 8.0, 8.2, 8.3],
+                    borderColor: '#10B981',
+                    backgroundColor: 'transparent',
+                    tension: 0.3,
+                    borderWidth: 2,
+                    borderDash: [5, 5]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 6,
+                        max: 10
+                    }
+                }
+            }
+        });
+
+        // Initialize feather icons
+        feather.replace();
+    </script>
+</body>
+</html>
